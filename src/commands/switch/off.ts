@@ -51,6 +51,7 @@ export default class Off extends SfdxCommand {
       callOptions: defaultNamespace ? {defaultNamespace} : undefined,
     })
 
+    this.ux.log(instanceUrl)
     conn2.query('SELECT Id, Name FROM Account LIMIT 1')
     this.ux.log('error not occur')
 
