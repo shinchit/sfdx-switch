@@ -40,7 +40,7 @@ export default class Off extends SfdxCommand {
     if (!this.org) {
       throw new Error('No connecting organization found');
     }
-    this.ux.log('Hello');
+    this.ux.log('Hello ???  hoge');
 
     /*
     const conn = this.org.getConnection();

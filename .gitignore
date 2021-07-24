@@ -1,3 +1,11 @@
+*-debug.log
+*-error.log
 .env
-node_modules/
+/.nyc_output
+/dist
+/lib
+/tmp
+/yarn.lock
 lib/
+node_modules
+node_modules/
