@@ -1,30 +1,29 @@
-import { SfdxCommand } from '@salesforce/command';
-import { AnyJson } from '@salesforce/ts-types';
+import {SfdxCommand} from '@salesforce/command'
+import {AnyJson} from '@salesforce/ts-types'
 /*
 import { execSync } from "child_process";
 import * as fs from "fs";
-import * as path from "path";
 import * as xml2json from "xml2json";
 import * as yargs from "yargs";
 */
-// import * as jsforce from "jsforce";
-import * as dotenv from "dotenv";
-dotenv.config({ path: __dirname+'/.env' });
+import * as jsforce from 'jsforce'
+import * as path from 'path'
+import * as dotenv from 'dotenv'
+dotenv.config({path: path.join(__dirname, '.env')})
 
 // core.Messages.importMessagesDirectory(__dirname);
 // const messages = core.Messages.loadMessages('sfdx-switch', 'off');
-
 
 export default class Off extends SfdxCommand {
   // public static description = messages.getMessage('commandDescription');
 
   public static get usage() {
-    return SfdxCommand.usage.replace('<%= command.id %>', 'switch:off');
+    return SfdxCommand.usage.replace('<%= command.id %>', 'switch:off')
   }
 
   public static examples = [
-    '$ sfdx switch:off --targetusername username@example.com'
-  ];
+    '$ sfdx switch:off --targetusername username@example.com',
+  ]
 
   // Comment this out if your command does not require an org username
   protected static requiresUsername = true;
@@ -38,23 +37,25 @@ export default class Off extends SfdxCommand {
   public async run(): Promise<AnyJson> {
     // Setup connection
     if (!this.org) {
-      throw new Error('No connecting organization found');
+      throw new Error('No connecting organization found')
     }
-    this.ux.log('Hello');
 
-    /*
-    const conn = this.org.getConnection();
-    await conn.request('/');
-    const { accessToken, instanceUrl } = conn;
-    const defaultNamespace: string | undefined = this.flags.defaultnamespace;
+    const conn = this.org.getConnection()
+    await conn.request('/')
+    const {accessToken, instanceUrl} = conn
+    const defaultNamespace: string | undefined = this.flags.defaultnamespace
     const conn2 = new jsforce.Connection({
       accessToken,
       instanceUrl,
       version: this.flags.apiversion,
-      callOptions: defaultNamespace ? { defaultNamespace } : undefined,
-    });
+      callOptions: defaultNamespace ? {defaultNamespace} : undefined,
+    })
 
-    this.ux.log();
+    conn2.query('SELECT Id, Name FROM Account LIMIT 1')
+    this.ux.log('error not occur')
+
+    this.ux.log()
+    /*
     this.ux.table(results, {
       columns: [
         {
@@ -68,6 +69,6 @@ export default class Off extends SfdxCommand {
       ],
     });
     */
-    return { 'hoge': 'fuga' };
+    return {hoge: 'fuga'}
   }
 }
