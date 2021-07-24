@@ -49,7 +49,7 @@ const SANDBOX_FLAG = process.env.DOMAIN === 'login' ? '' : '--sandbox';
 
   records.forEach(function(flow: any) {
     const activeVersionNumber = argv.mode !== 'off' ? flow['ActiveVersion']['VersionNumber'] : null;
-    const res = conn.tooling.sobject('FlowDefinition').update({
+    conn.tooling.sobject('FlowDefinition').update({
       Id: flow['Id'],
       Metadata: {
         'activeVersionNumber': activeVersionNumber
