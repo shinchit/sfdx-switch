@@ -43,6 +43,7 @@ export default class Off extends SfdxCommand {
     const conn = this.org.getConnection()
     await conn.request('/')
     const {accessToken, instanceUrl} = conn
+    const SF_USERNAME = conn.getUsername()
     const defaultNamespace: string | undefined = this.flags.defaultnamespace
     const conn2 = new jsforce.Connection({
       accessToken,
@@ -50,6 +51,18 @@ export default class Off extends SfdxCommand {
       version: this.flags.apiversion,
       callOptions: defaultNamespace ? {defaultNamespace} : undefined,
     })
+
+    const DEFINITION_DATA_FILE_PATH = './data/' + SF_USERNAME + '_define.json'
+    const TRIGGER_DEFINITION_DATA_FILE_PATH = './data/' + SF_USERNAME + '_trigger_define.json'
+    const METADATA_PACKAGE_DIR = './data/package/'
+    const METADATA_PACKAGE_TRIGGER_DIR = METADATA_PACKAGE_DIR + 'triggers/'
+    const SANDBOX_FLAG = '--sandbox'
+
+    this.ux.log(DEFINITION_DATA_FILE_PATH)
+    this.ux.log(TRIGGER_DEFINITION_DATA_FILE_PATH)
+    this.ux.log(METADATA_PACKAGE_DIR)
+    this.ux.log(METADATA_PACKAGE_TRIGGER_DIR)
+    this.ux.log(SANDBOX_FLAG)
 
     this.ux.log(instanceUrl)
     conn2.query('SELECT Id, Name FROM Account LIMIT 1')
