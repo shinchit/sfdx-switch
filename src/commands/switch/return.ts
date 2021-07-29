@@ -1,16 +1,11 @@
 import * as core from '@salesforce/core'
 import {SfdxCommand} from '@salesforce/command'
 import {AnyJson} from '@salesforce/ts-types'
-/*
-import { execSync } from "child_process";
-import * as xml2json from "xml2json";
-import * as yargs from "yargs";
-*/
-// import * as jsforce from 'jsforce'
+import {execSync} from 'child_process'
+import * as xml2json from 'xml2json'
 import * as fs from 'fs'
 import * as path from 'path'
-import * as dotenv from 'dotenv'
-dotenv.config({path: path.join(__dirname, '.env')})
+import * as AdmZip from 'adm-zip'
 
 core.Messages.importMessagesDirectory(__dirname)
 const messages = core.Messages.loadMessages('sfdx-switch', 'return')
@@ -42,24 +37,13 @@ export default class Return extends SfdxCommand {
     }
 
     const conn = this.org.getConnection()
-    await conn.request('/')
-    const {accessToken, instanceUrl} = conn
     const SF_USERNAME = conn.getUsername()
-    const defaultNamespace: string | undefined = this.flags.defaultnamespace
-    /*
-    const conn2 = new jsforce.Connection({
-      accessToken,
-      instanceUrl,
-      version: this.flags.apiversion,
-      callOptions: defaultNamespace ? {defaultNamespace} : undefined,
-    })
-    */
 
-    const DEFINITION_DATA_FILE_PATH = path.join(__dirname, 'data/' + SF_USERNAME + '_define.json')
-    // const TRIGGER_DEFINITION_DATA_FILE_PATH = path.join(__dirname, 'data/' + SF_USERNAME + '_trigger_define.json')
-    // const METADATA_PACKAGE_DIR = path.join(__dirname, 'data/package/')
-    // const METADATA_PACKAGE_TRIGGER_DIR = METADATA_PACKAGE_DIR + 'triggers/'
-    // const SANDBOX_FLAG = '--sandbox'
+    const DATA_DIR = './src/commands/switch/data/'
+    const DEFINITION_DATA_FILE_PATH = DATA_DIR + SF_USERNAME + '_define.json'
+    const TRIGGER_DEFINITION_DATA_FILE_PATH = DATA_DIR + SF_USERNAME + '_trigger_define.json'
+    const METADATA_PACKAGE_DIR = DATA_DIR + 'package/'
+    const METADATA_PACKAGE_TRIGGER_DIR = METADATA_PACKAGE_DIR + 'triggers/'
 
     /* fetch FlowDefinition (Process) using Tooling API */
     let records: any[] = []
@@ -81,6 +65,55 @@ export default class Return extends SfdxCommand {
         },
       })
     })
+
+    /* retrieve triggers metadata */
+    try {
+      execSync(`sfdx force:mdapi:retrieve -s -r ${METADATA_PACKAGE_DIR} -u ${SF_USERNAME} -k ${METADATA_PACKAGE_DIR}/package.xml`)
+      const zip = new AdmZip(path.resolve(METADATA_PACKAGE_DIR, './unpackaged.zip'))
+      zip.extractAllTo(METADATA_PACKAGE_DIR, true)
+    } catch (error) {
+      this.ux.log(error.messages)
+    }
+
+    const dirents = fs.readdirSync(METADATA_PACKAGE_TRIGGER_DIR, {withFileTypes: true})
+
+    const trigger_files = []
+    for (const dirent of dirents) {
+      if (!dirent.isDirectory()) {
+        const trigger_file = METADATA_PACKAGE_TRIGGER_DIR + dirent.name
+        trigger_files.push(trigger_file)
+      }
+    }
+    const xml_files = trigger_files.filter(function (file) {
+      return path.extname(file).toLowerCase() === '.xml'
+    })
+
+    let jsons = xml_files.map(function (xml_file) {
+      const xml = fs.readFileSync(xml_file, 'utf-8')
+      return xml2json.toJson(xml, {object: true, reversible: true, arrayNotation: true})
+    })
+
+    // restore status
+    if (fs.existsSync(TRIGGER_DEFINITION_DATA_FILE_PATH)) {
+      try {
+        jsons = JSON.parse(fs.readFileSync(TRIGGER_DEFINITION_DATA_FILE_PATH, 'utf8'))
+        fs.unlinkSync(TRIGGER_DEFINITION_DATA_FILE_PATH)
+      } catch (error) {
+        this.ux.log(`The read or unlink process has failed. Please check ${TRIGGER_DEFINITION_DATA_FILE_PATH}`)
+      }
+    }
+
+    for (let i = 0; i < jsons.length; i++) {
+      fs.writeFileSync(xml_files[i], '<?xml version="1.0" encoding="UTF-8"?>\n' + xml2json.toXml(jsons[i]))
+    }
+
+    /* deploy triggers metadata */
+    try {
+      execSync(`sfdx force:mdapi:deploy -d ${METADATA_PACKAGE_DIR} -u ${SF_USERNAME} -w -1`)
+      fs.unlinkSync(path.resolve(METADATA_PACKAGE_DIR, './unpackaged.zip'))
+    } catch (error) {
+      this.ux.log(error.messages)
+    }
 
     return {state: 'success'}
   }
