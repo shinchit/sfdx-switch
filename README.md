@@ -20,7 +20,7 @@ $ npm install -g sfdx-switch
 $ sfdx-switch COMMAND
 running command...
 $ sfdx-switch (-v|--version|version)
-sfdx-switch/0.0.4 darwin-x64 node-v14.15.4
+sfdx-switch/0.0.5 darwin-x64 node-v14.15.4
 $ sfdx-switch --help [COMMAND]
 USAGE
   $ sfdx-switch COMMAND
@@ -56,7 +56,7 @@ EXAMPLE
   $ sfdx switch:off --targetusername username@example.com
 ```
 
-_See code: [src/commands/switch/off.ts](https://github.com/shinchit/sfdx-switch/blob/v0.0.4/src/commands/switch/off.ts)_
+_See code: [src/commands/switch/off.ts](https://github.com/shinchit/sfdx-switch/blob/v0.0.5/src/commands/switch/off.ts)_
 
 ## `sfdx-switch switch:return [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -82,5 +82,5 @@ EXAMPLE
   $ sfdx switch:return --targetusername username@example.com
 ```
 
-_See code: [src/commands/switch/return.ts](https://github.com/shinchit/sfdx-switch/blob/v0.0.4/src/commands/switch/return.ts)_
+_See code: [src/commands/switch/return.ts](https://github.com/shinchit/sfdx-switch/blob/v0.0.5/src/commands/switch/return.ts)_
 <!-- commandsstop -->
