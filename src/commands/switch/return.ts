@@ -39,11 +39,11 @@ export default class Return extends SfdxCommand {
     const conn = this.org.getConnection()
     const SF_USERNAME = conn.getUsername()
 
-    const DATA_DIR = './src/commands/switch/data/'
-    const DEFINITION_DATA_FILE_PATH = DATA_DIR + SF_USERNAME + '_define.json'
-    const TRIGGER_DEFINITION_DATA_FILE_PATH = DATA_DIR + SF_USERNAME + '_trigger_define.json'
-    const METADATA_PACKAGE_DIR = DATA_DIR + 'package/'
-    const METADATA_PACKAGE_TRIGGER_DIR = METADATA_PACKAGE_DIR + 'triggers/'
+    const DATA_DIR = path.resolve(__dirname, '../../../data')
+    const DEFINITION_DATA_FILE_PATH = path.resolve(DATA_DIR, SF_USERNAME + '_define.json')
+    const TRIGGER_DEFINITION_DATA_FILE_PATH = path.resolve(DATA_DIR, SF_USERNAME + '_trigger_define.json')
+    const METADATA_PACKAGE_DIR = path.resolve(DATA_DIR, './package/')
+    const METADATA_PACKAGE_TRIGGER_DIR = path.resolve(METADATA_PACKAGE_DIR, './triggers/')
 
     /* fetch FlowDefinition (Process) using Tooling API */
     let records: any[] = []
@@ -68,8 +68,8 @@ export default class Return extends SfdxCommand {
 
     /* retrieve triggers metadata */
     try {
-      execSync(`sfdx force:mdapi:retrieve -s -r ${METADATA_PACKAGE_DIR} -u ${SF_USERNAME} -k ${METADATA_PACKAGE_DIR}/package.xml`)
-      const zip = new AdmZip(path.resolve(METADATA_PACKAGE_DIR, './unpackaged.zip'))
+      execSync(`sfdx force:mdapi:retrieve -s -r ${METADATA_PACKAGE_DIR} -u ${SF_USERNAME} -k ` + path.resolve(METADATA_PACKAGE_DIR, 'package.xml'))
+      const zip = new AdmZip(path.resolve(METADATA_PACKAGE_DIR, 'unpackaged.zip'))
       zip.extractAllTo(METADATA_PACKAGE_DIR, true)
     } catch (error) {
       this.ux.log(error.messages)
@@ -80,7 +80,7 @@ export default class Return extends SfdxCommand {
     const trigger_files = []
     for (const dirent of dirents) {
       if (!dirent.isDirectory()) {
-        const trigger_file = METADATA_PACKAGE_TRIGGER_DIR + dirent.name
+        const trigger_file = path.resolve(METADATA_PACKAGE_TRIGGER_DIR, dirent.name)
         trigger_files.push(trigger_file)
       }
     }
