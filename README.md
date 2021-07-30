@@ -3,11 +3,14 @@ sfdx-switch
 
 SFDX plugin to disable the Salesforce process, ApexTrigger in bulk, and restore the state before invalidation.
 
-[![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/sfdx-switch.svg)](https://npmjs.org/package/sfdx-switch)
-[![CircleCI](https://circleci.com/gh/[object Object]/tree/master.svg?style=shield)](https://circleci.com/gh/[object Object]/tree/master)
+[![CircleCI](https://circleci.com/gh/stomita/sfdx-switch/tree/main.svg?style=shield)](https://circleci.com/gh/stomita/sfdx-switch/tree/main)
+[![Appveyor CI](https://ci.appveyor.com/api/projects/status/github/stomita/sfdx-switch?branch=main&svg=true)](https://ci.appveyor.com/project/heroku/sfdx-switch/branch/main)
+[![Codecov](https://codecov.io/gh/stomita/sfdx-switch/branch/main/graph/badge.svg)](https://codecov.io/gh/stomita/sfdx-switch)
+[![Greenkeeper](https://badges.greenkeeper.io/stomita/sfdx-switch.svg)](https://greenkeeper.io/)
+[![Known Vulnerabilities](https://snyk.io/test/github/stomita/sfdx-switch/badge.svg)](https://snyk.io/test/github/stomita/sfdx-switch)
 [![Downloads/week](https://img.shields.io/npm/dw/sfdx-switch.svg)](https://npmjs.org/package/sfdx-switch)
-[![License](https://img.shields.io/npm/l/sfdx-switch.svg)](https://github.com/[object Object]/blob/master/package.json)
+[![License](https://img.shields.io/npm/l/sfdx-switch.svg)](https://github.com/stomita/sfdx-switch/blob/main/package.json)
 
 <!-- toc -->
 * [Usage](#usage)
