@@ -1,7 +1,7 @@
 sfdx-switch
 ===========
 
-SFDX plugin to disable the Salesforce process, ApexTrigger in bulk, and restore the state before invalidation.
+SFDX plugin to disable the Salesforce process, flow and ApexTrigger in bulk, and restore the state before invalidation.
 
 [![Version](https://img.shields.io/npm/v/sfdx-switch.svg)](https://npmjs.org/package/sfdx-switch)
 [![Known Vulnerabilities](https://snyk.io/test/github/shinchit/sfdx-switch/badge.svg)](https://snyk.io/test/github/shinchit/sfdx-switch)
@@ -25,7 +25,7 @@ $ sfdx plugins:install sfdx-switch
 
 ## `sfdx switch:off [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
-Disable the state of Salesforce processes and Apex triggers at once.
+Disable the state of Salesforce processes, flows and Apex triggers at once.
 
 ```
 USAGE
@@ -51,7 +51,7 @@ _See code: [src/commands/switch/off.ts](https://github.com/shinchit/sfdx-switch/
 
 ## `sfdx switch:return [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
-Restores the state of Salesforce processes and Apex triggers at once.
+Restores the state of Salesforce processes, flows and Apex triggers at once.
 
 ```
 USAGE
