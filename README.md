@@ -16,13 +16,10 @@ SFDX plugin to disable the Salesforce process, ApexTrigger in bulk, and restore 
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
-# Usage
+# Install
 <!-- usage -->
 ```sh-session
 $ sfdx plugins:install sfdx-switch
-USAGE
-  $ sfdx switch:COMMAND --targetusername=targetusername
-...
 ```
 <!-- usagestop -->
 # Commands
