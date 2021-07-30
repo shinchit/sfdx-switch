@@ -13,7 +13,7 @@ SFDX plugin to disable the Salesforce process, ApexTrigger in bulk, and restore 
 [![License](https://img.shields.io/npm/l/sfdx-switch.svg)](https://github.com/stomita/sfdx-switch/blob/main/package.json)
 
 <!-- toc -->
-* [Usage](#usage)
+* [Install](#install)
 * [Commands](#commands)
 <!-- tocstop -->
 # Install
@@ -51,7 +51,7 @@ EXAMPLE
   $ sfdx switch:off --targetusername username@example.com
 ```
 
-_See code: [src/commands/switch/off.ts](https://github.com/shinchit/sfdx-switch/blob/v0.1.0/src/commands/switch/off.ts)_
+_See code: [src/commands/switch/off.ts](https://github.com/shinchit/sfdx-switch/blob/v0.1.1/src/commands/switch/off.ts)_
 
 ## `sfdx switch:return [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -77,5 +77,5 @@ EXAMPLE
   $ sfdx switch:return --targetusername username@example.com
 ```
 
-_See code: [src/commands/switch/return.ts](https://github.com/shinchit/sfdx-switch/blob/v0.1.0/src/commands/switch/return.ts)_
+_See code: [src/commands/switch/return.ts](https://github.com/shinchit/sfdx-switch/blob/v0.1.1/src/commands/switch/return.ts)_
 <!-- commandsstop -->
