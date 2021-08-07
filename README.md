@@ -47,7 +47,7 @@ EXAMPLE
   $ sfdx switch:off --targetusername username@example.com
 ```
 
-_See code: [src/commands/switch/off.ts](https://github.com/shinchit/sfdx-switch/blob/v0.1.4/src/commands/switch/off.ts)_
+_See code: [src/commands/switch/off.ts](https://github.com/shinchit/sfdx-switch/blob/v1.0.0/src/commands/switch/off.ts)_
 
 ## `sfdx switch:return [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -73,5 +73,9 @@ EXAMPLE
   $ sfdx switch:return --targetusername username@example.com
 ```
 
-_See code: [src/commands/switch/return.ts](https://github.com/shinchit/sfdx-switch/blob/v0.1.4/src/commands/switch/return.ts)_
+_See code: [src/commands/switch/return.ts](https://github.com/shinchit/sfdx-switch/blob/v1.0.0/src/commands/switch/return.ts)_
 <!-- commandsstop -->
+
+# Note
+
+This plugin can only inactivate Apex Trigger, which is unmanaged as packaged. Please note that ApexTrigger, an external package introduced by AppExchange etc., cannot be inactived.
