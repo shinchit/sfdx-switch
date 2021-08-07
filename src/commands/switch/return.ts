@@ -3,7 +3,7 @@ import {SfdxCommand} from '@salesforce/command'
 import {AnyJson} from '@salesforce/ts-types'
 import {execSync} from 'child_process'
 import * as xml2json from 'xml2json'
-import * as fs from 'fs'
+import * as fs from 'fs-extra'
 import * as path from 'path'
 import * as AdmZip from 'adm-zip'
 
@@ -43,7 +43,8 @@ export default class Return extends SfdxCommand {
     const DEFINITION_DATA_FILE_PATH = path.resolve(DATA_DIR, SF_USERNAME + '_define.json')
     const TRIGGER_DEFINITION_DATA_FILE_PATH = path.resolve(DATA_DIR, SF_USERNAME + '_trigger_define.json')
     const METADATA_PACKAGE_DIR = path.resolve(DATA_DIR, './package/')
-    const METADATA_PACKAGE_TRIGGER_DIR = path.resolve(METADATA_PACKAGE_DIR, './triggers/')
+    const METADATA_PACKAGE_USER_DIR = path.resolve(METADATA_PACKAGE_DIR, `./${SF_USERNAME}/`)
+    const METADATA_PACKAGE_TRIGGER_DIR = path.resolve(METADATA_PACKAGE_USER_DIR, './triggers/')
 
     /* fetch FlowDefinition (Process) using Tooling API */
     let records: any[] = []
@@ -68,11 +69,20 @@ export default class Return extends SfdxCommand {
 
     /* retrieve triggers metadata */
     try {
-      execSync(`sfdx force:mdapi:retrieve -s -r ${METADATA_PACKAGE_DIR} -u ${SF_USERNAME} -k ` + path.resolve(METADATA_PACKAGE_DIR, 'package.xml'))
-      const zip = new AdmZip(path.resolve(METADATA_PACKAGE_DIR, 'unpackaged.zip'))
-      zip.extractAllTo(METADATA_PACKAGE_DIR, true)
+      execSync(`sfdx force:mdapi:retrieve -s -r ${METADATA_PACKAGE_USER_DIR} -u ${SF_USERNAME} -k ` + path.resolve(METADATA_PACKAGE_DIR, 'package.xml'))
+      const zip = new AdmZip(path.resolve(METADATA_PACKAGE_USER_DIR, 'unpackaged.zip'))
+      zip.extractAllTo(METADATA_PACKAGE_USER_DIR, true)
     } catch (error) {
       this.ux.log(error.messages)
+    }
+
+    if (!fs.existsSync(METADATA_PACKAGE_TRIGGER_DIR)) {
+      try {
+        fs.removeSync(METADATA_PACKAGE_USER_DIR)
+      } catch (error) {
+        this.ux.log(error.messages)
+      }
+      return {state: 'skip'}
     }
 
     const dirents = fs.readdirSync(METADATA_PACKAGE_TRIGGER_DIR, {withFileTypes: true})
@@ -109,8 +119,8 @@ export default class Return extends SfdxCommand {
 
     /* deploy triggers metadata */
     try {
-      execSync(`sfdx force:mdapi:deploy -d ${METADATA_PACKAGE_DIR} -u ${SF_USERNAME} -w -1`)
-      fs.unlinkSync(path.resolve(METADATA_PACKAGE_DIR, './unpackaged.zip'))
+      execSync(`sfdx force:mdapi:deploy -d ${METADATA_PACKAGE_USER_DIR} -u ${SF_USERNAME} -w -1`)
+      fs.removeSync(METADATA_PACKAGE_USER_DIR)
     } catch (error) {
       this.ux.log(error.messages)
     }
