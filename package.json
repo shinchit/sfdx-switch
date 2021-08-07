@@ -1,7 +1,7 @@
 {
   "name": "sfdx-switch",
   "description": "SFDX plugin to disable the Salesforce process, ApexTrigger in bulk, and restore the state before invalidation.",
-  "version": "0.1.4",
+  "version": "1.0.0",
   "author": "Takahiro Shinchi <shinchi@its-all-writing.com>",
   "bin": {
     "sfdx-switch": "./bin/run"
