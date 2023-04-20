@@ -15,7 +15,7 @@
     "@salesforce/core": "^2.27.0",
     "adm-zip": "^0.5.5",
     "fs-extra": "^8.1.0",
-    "jsforce": "^1.10.1",
+    "jsforce": "^1.11.1",
     "tslib": "^1.14.1",
     "xml2json": "^0.12.0"
   },
